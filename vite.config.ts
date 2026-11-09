@@ -1,11 +1,29 @@
+import { cpSync, existsSync } from 'fs';
 import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
 import {defineConfig} from 'vite';
 
-export default defineConfig(() => {
+export default defineConfig(({ command }) => {
   return {
-    plugins: [react(), tailwindcss()],
+    plugins: [
+      react(),
+      tailwindcss(),
+      {
+        name: 'copy-source-assets-for-static-hosting',
+        apply: 'build',
+        writeBundle(options) {
+          const source = path.resolve(__dirname, 'src/assets');
+          const output = path.join(options.dir ?? path.resolve(__dirname, 'dist'), 'src/assets');
+
+          // Components refer to these files by their /src/assets/... URLs.
+          // Copy them into Vite's output so those URLs also work after deployment.
+          if (existsSync(source)) {
+            cpSync(source, output, { recursive: true });
+          }
+        },
+      },
+    ],
     resolve: {
       alias: {
         '@': path.resolve(__dirname, '.'),
