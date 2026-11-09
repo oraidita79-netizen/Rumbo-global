@@ -1,0 +1,6 @@
+{
+  "name": "Rumbo Global",
+  "description": "Plataforma de asesoramiento integral en trámites migratorios, visados, residencia y gestión de expedientes con asistente inteligente multimodal Alex.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
